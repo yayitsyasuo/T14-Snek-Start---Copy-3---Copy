@@ -151,6 +151,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Snak.h" />
     <ClInclude Include="SpriteCodex.h" />
+    <ClInclude Include="Zeit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="OnScreen.cpp" />
     <ClCompile Include="Snak.cpp" />
     <ClCompile Include="SpriteCodex.cpp" />
+    <ClCompile Include="Zeit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">

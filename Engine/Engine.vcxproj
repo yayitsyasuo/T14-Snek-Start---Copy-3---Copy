@@ -94,6 +94,7 @@
       <CallingConvention>VectorCall</CallingConvention>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,6 +130,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -151,6 +153,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Snak.h" />
     <ClInclude Include="SpriteCodex.h" />
+    <ClInclude Include="Vec2D.h" />
     <ClInclude Include="Zeit.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +169,7 @@
     <ClCompile Include="OnScreen.cpp" />
     <ClCompile Include="Snak.cpp" />
     <ClCompile Include="SpriteCodex.cpp" />
+    <ClCompile Include="Vec2D.cpp" />
     <ClCompile Include="Zeit.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -58,10 +58,10 @@ void Snak::SnakControl(Keyboard&kbd)
 		}
 }
 
-void Snak::KeepOnGoing()
+void Snak::KeepOnGoing(float dT)
 {
-	meter++;
-	if (meter % ReadMeterTimerSpeed() == 0) {
+	Zeit += dT;
+	if (Zeit >= TimeForOneMove) {
 		once = true;
 		for (int i = 0; i <= nSegments; i++) { //MODERN VERSION <3
 			if (GoW)
@@ -73,7 +73,7 @@ void Snak::KeepOnGoing()
 			else if (GoD)
 				FollowUp(i, 1, &x, &WeGoinRight, &WeGoinLeft, &WeGoinUp, &WeGoinDown);
 		}
-		meter = 0;
+		Zeit = 0;
 	}
 }
 
@@ -118,29 +118,24 @@ void Snak::Segment::PositionSave()
 	y_previous = y;
 }
 
-int Snak::ReadMeterTimerSpeed() const
+float Snak::ReadTimeForOneMove() const
 {
-	return meterTimerSpeed;
+	return TimeForOneMove;
 }
 
 void Snak::SpeedUp()
 {
-	meterTimerSpeed -= 1;
+	TimeForOneMove -= 0.015f;
 }
 
 void Snak::SlowDown()
 {
-	meterTimerSpeed = 12;
+	TimeForOneMove = 0.13f;
 }
 
 int Snak::GetnSegments()
 {
 	return nSegments;
-}
-
-void Snak::MeterIncrease()
-{
-	meter++;
 }
 
 void Snak::Segment::SegmentInit(Snak&snek)

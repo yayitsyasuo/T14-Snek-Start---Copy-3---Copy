@@ -50,7 +50,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dT = Zeit.TimeMeasure();
+	const float dT = Zeit.TimeMeasure();  // time it takes for every frame to happen  dT
 
 	if (!Snake.GameOver) {
 		Snake.SnakControl(wnd.kbd);
@@ -93,14 +93,8 @@ void Game::UpdateModel()
 			}
 			GoObstacle = false;
 
-			if (once3) {
-				if (Snake.GetnSegments() % 5 == 0)
-					Snake.MeterIncrease(); // another speed up
-				once3 = false;
-			}
-
 			if (just_once2) {   // mixture stuff
-				if ((nObstacles + 1) % 8 == 0) { //could be given those  already taken
+				if ((nObstacles + 1) % 6 == 0) { //could be given those  already taken
 					bool shitt1;
 					do {
 						Mixture[nMixtures].NewXY();
@@ -145,7 +139,7 @@ void Game::UpdateModel()
 				if (obstacles[i].Mixture(Snake))
 					Snake.GameOver = true;
 			}
-			Snake.KeepOnGoing();
+			Snake.KeepOnGoing(dT);
 			Snake.Collision();
 			Snake.Border_Collision();
 	}

@@ -50,6 +50,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dT = Zeit.TimeMeasure();
+
 	if (!Snake.GameOver) {
 		Snake.SnakControl(wnd.kbd);
 		for (int i = 0; i < nGoals; ++i)

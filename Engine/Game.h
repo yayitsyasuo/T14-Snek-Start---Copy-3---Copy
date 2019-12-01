@@ -28,6 +28,7 @@
 #include "Grid.h"
 #include "Goal.h"
 #include"OnScreen.h"
+#include "Zeit.h"
 
 class Game
 {
@@ -63,6 +64,7 @@ private:
 	int nMixtures = 0;
 	Grid grid;
 	OnScreen ded;
+	Zeit Zeit;
 
 	bool GoObstacle = false;
 	bool eaten[nGoals];

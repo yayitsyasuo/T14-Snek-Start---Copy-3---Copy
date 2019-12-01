@@ -1,5 +1,5 @@
 #include "Zeit.h"
-#include <cstdlib>
+
 using namespace std::chrono;
 Zeit::Zeit()
 {
@@ -8,8 +8,8 @@ Zeit::Zeit()
 
 float Zeit::TimeMeasure()
 {
-	steady_clock::time_point now = steady_clock::now();
-	duration<float> duration = abs(now - last);
+	const auto old = last;
 	last = steady_clock::now();
+	const duration<float> duration = last - old;
 	return duration.count();
 }

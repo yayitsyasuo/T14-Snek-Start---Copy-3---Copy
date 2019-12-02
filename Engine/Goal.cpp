@@ -67,13 +67,13 @@ void Goal::Food(Snak& snek)
 {
 	const int goal_right_side = x + grid.GetDimension();
 	const int goal_down_side = y + grid.GetDimension();
-	const int snek_right_side = snek.x + grid.GetDimension();
-	const int snek_down_side = snek.y + grid.GetDimension();
+	const int snek_right_side = snek.pos.x + grid.GetDimension();
+	const int snek_down_side = snek.pos.y + grid.GetDimension();
 
 	if (snek_right_side > x &&
-		snek.x < goal_right_side &&
+		snek.pos.x < goal_right_side &&
 		snek_down_side > y &&
-		snek.y < goal_down_side) {
+		snek.pos.y < goal_down_side) {
 		eaten = true;
 	}
 }
@@ -82,12 +82,12 @@ bool Goal::Mixture(Snak& snek)
 {
 	const int goal_right_side = x + grid.GetDimension();
 	const int goal_down_side = y + grid.GetDimension();
-	const int snek_right_side = snek.x + grid.GetDimension();
-	const int snek_down_side = snek.y + grid.GetDimension();
+	const int snek_right_side = snek.pos.x + grid.GetDimension();
+	const int snek_down_side = snek.pos.y + grid.GetDimension();
 
 	return (snek_right_side > x &&
-		snek.x < goal_right_side &&
+		snek.pos.x < goal_right_side &&
 		snek_down_side > y &&
-		snek.y < goal_down_side);
+		snek.pos.y < goal_down_side);
 }
 

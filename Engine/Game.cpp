@@ -36,7 +36,7 @@ Game::Game(MainWindow& wnd)
 		goal[i].GridConversion();
 		eaten[i] = false;
 	}
-	Snake.SnakeInit(DistX(rng), DistY(rng));
+	Snake.SnakeInit(Vec2D (DistX(rng), DistY(rng)));
 	Snake.fuckingConversion();
 }
 

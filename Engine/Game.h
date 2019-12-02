@@ -31,6 +31,7 @@
 #include "Zeit.h"
 
 
+
 class Game
 {
 public:
@@ -66,6 +67,7 @@ private:
 	Grid grid;
 	OnScreen ded;
 	Zeit Zeit;
+
 
 	bool GoObstacle = false;
 	bool eaten[nGoals];

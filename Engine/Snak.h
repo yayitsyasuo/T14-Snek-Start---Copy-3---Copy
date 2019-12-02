@@ -3,13 +3,14 @@
 #include"Colors.h"
 #include "Keyboard.h"
 #include "Grid.h"
+#include "Vec2D.h"
 
 class Snak
 {
 public:
 	class Segment {
 	public:
-		void Init(int xx, int yy);
+		void Init(Vec2D &pos);
 		void Draw(Graphics&gfx, int i);
 		int x;
 		int y;
@@ -28,25 +29,25 @@ public:
 	};
 
 public:
-	void SnakeInit(int xxx, int yyy); //
+	void SnakeInit(Vec2D &pos_in); //
 	void SnakDraw(Graphics&gfx) const; //
 	void SnakControl(Keyboard&kbd);
 	void fuckingConversion(); //
 	void KeepOnGoing(float dT);
 	void Grow();
-	void FollowUp(int, int, int*, bool*, bool*, bool*, bool*);
+	void FollowUp(int, int, float, bool*, bool*, bool*, bool*);
 	void Border_Collision();
 	void Collision();
 	float ReadTimeForOneMove() const;
 	void SpeedUp();
 	void SlowDown();
 	int GetnSegments();
-	int x;
-	int y;
+	// int x;
+	// int y;
 	static const int maxSegments=40;
 	bool GameOver = false;
 	Segment seg[maxSegments];  // important max value here
-private:
+public:
 	bool once;
 	bool GoW=false;
 	bool GoA = false;
@@ -59,6 +60,7 @@ private:
 	bool WpressedStimulation = true;
 	int nSegments = 0;
 	Grid grid;
+	Vec2D pos;
 	float Zeit= 0;
 	float TimeForOneMove=0.15f; // used to be 15 frames?
 };

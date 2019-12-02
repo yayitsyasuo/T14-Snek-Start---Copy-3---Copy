@@ -12,10 +12,12 @@ public:
 	public:
 		void Init(Vec2D &pos);
 		void Draw(Graphics&gfx, int i);
-		int x;
-		int y;
-		int x_previous;
-		int y_previous;
+		Vec2D segpos; //position of the segment
+		//int x;
+		//int y;
+		//int x_previous;
+		//int y_previous;
+		Vec2D segpos_previous;
 		void SegmentInit(Snak&snek);
 		void PositionSave();
 		// void Color(int i); xD couldn't initialize in .cpp

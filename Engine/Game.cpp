@@ -38,6 +38,7 @@ Game::Game(MainWindow& wnd)
 	}
 	Snake.SnakeInit(Vec2D (DistX(rng), DistY(rng)));
 	Snake.fuckingConversion();
+	Snake.seg[0].SegmentInit(Vec2D (Snake.pos.x + grid.GetDimension(), Snake.pos.y));
 }
 
 void Game::Go()

@@ -1,6 +1,6 @@
 #include "Vec2D.h"
 
-Vec2D::Vec2D(float fl_x, float fl_y)
+Vec2D::Vec2D(int fl_x, int fl_y)
      :
 	x (fl_x),
     y (fl_y)

@@ -1,11 +1,12 @@
 #include "Snak.h"
 #include "Segment.h"
+#include "Vec2D.h"
 
 void Snak::fuckingConversion()
 {
-	float xn;
+	int xn;
 	xn = pos.x / grid.GetDimension();
-	float yn;
+	int yn;
 	yn = pos.y / grid.GetDimension();
 	pos.x = xn * grid.GetDimension();
 	pos.y = yn * grid.GetDimension();
@@ -101,20 +102,19 @@ void Snak::Collision()
 
 	for (int i = 0; i <= nSegments; i++)
 	{
-		if (SnakeRightSide > seg[i].x &&
-			pos.x < seg[i].x + grid.GetDimension() &&
-			SnakeDownSide > seg[i].y &&
-			pos.y < seg[i].y + grid.GetDimension()) {
+		if (SnakeRightSide > seg[i].segpos.x &&
+			pos.x < seg[i].segpos.x + grid.GetDimension() &&
+			SnakeDownSide > seg[i].segpos.y &&
+			pos.y < seg[i].segpos.y + grid.GetDimension()) {
 			GameOver=true;
 		}
 	}
 		
 }
-
+// holy fuck this one unter mich
 void Snak::Segment::PositionSave()
 {
-	x_previous = x;
-	y_previous = y;
+	Vec2D segpos_previous(segpos);
 }
 
 float Snak::ReadTimeForOneMove() const
@@ -139,14 +139,16 @@ int Snak::GetnSegments()
 
 void Snak::Segment::SegmentInit(Snak&snek)
 {
-		x = snek.seg[snek.nSegments-1].x;
-		y = snek.seg[snek.nSegments - 1].y;
+	segpos.x = snek.seg[snek.nSegments-1].segpos.x;
+	segpos.y = snek.seg[snek.nSegments - 1].segpos.y;
 }
 
 void Snak::Segment::Init(Vec2D &pos)
 {
-	x = pos.x + grid.GetDimension();
-	y = pos.y;
+	segpos = pos;
+	// segpos = pos.x+grid.GetDimension(), pos.y;
+	// segpos.x = pos.x + grid.GetDimension();
+	// segpos.y = pos.y;
 }
 
 void Snak::Segment::Draw(Graphics & gfx, int i)
@@ -154,13 +156,13 @@ void Snak::Segment::Draw(Graphics & gfx, int i)
 	for (int c=1; c < 14; c++) {
 		for (int d = 1; d < 14; d++) {
 			if (i % 4==0)
-				gfx.PutPixel(x + c, y + d, color[0][0], color[0][1], color[0][2]);
+				gfx.PutPixel(segpos.x + c, segpos.y + d, color[0][0], color[0][1], color[0][2]);
 			else if (i % 3==0)
-				gfx.PutPixel(x + c, y + d, color[1][0], color[1][1], color[1][2]);
+				gfx.PutPixel(segpos.x + c, segpos.y + d, color[1][0], color[1][1], color[1][2]);
 			else if (i % 2==0)
-				gfx.PutPixel(x + c, y + d, color[2][0], color[2][1], color[2][2]);
+				gfx.PutPixel(segpos.x + c, segpos.y + d, color[2][0], color[2][1], color[2][2]);
 			else
-				gfx.PutPixel(x + c, y + d, color[3][0], color[3][1], color[3][2]);
+				gfx.PutPixel(segpos.x + c, segpos.y + d, color[3][0], color[3][1], color[3][2]);
 		}
 	}
 	//gfx.DrawRectDim(x,y,grid.GetDimension(),grid.GetDimension(), );
@@ -171,13 +173,13 @@ void Snak::FollowUp(int i, int G, float direction, bool *Direction, bool *Direct
 	seg[i].PositionSave();
 	if (i != 0)
 	{
-		seg[i].x = seg[i - 1].x_previous;
-		seg[i].y = seg[i - 1].y_previous;
+		seg[i].segpos.x = seg[i - 1].segpos_previous.x;
+		seg[i].segpos.y = seg[i - 1].segpos_previous.y;
 	}
 	else
 	{
-	seg[0].x = pos.x;
-	seg[0].y = pos.y;
+	seg[0].segpos.x = pos.x;
+	seg[0].segpos.y = pos.y;
 	}
 	if (once) {
 	direction += grid.GetDimension() *G;

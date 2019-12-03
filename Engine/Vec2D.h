@@ -8,6 +8,7 @@ public:
 	Vec2D& operator += (const Vec2D &rhs); // no more const, we are changing the left side
 	Vec2D operator *(float rhs)const;
 	Vec2D& operator *=(float rhs);
+	Vec2D GetXY();
 public:
 	int x;
 	int y;

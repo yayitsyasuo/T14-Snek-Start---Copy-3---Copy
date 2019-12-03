@@ -22,6 +22,11 @@ Vec2D & Vec2D::operator*=(float rhs)
 	return *this = *this * rhs;
 }
 
+Vec2D Vec2D::GetXY()
+{
+	return Vec2D (x, y);
+}
+
 Vec2D Vec2D::operator*(float rhs)const
 {
 	return Vec2D(x * rhs, y*rhs);

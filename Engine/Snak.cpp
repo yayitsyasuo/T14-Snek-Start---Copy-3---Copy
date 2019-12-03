@@ -63,15 +63,25 @@ void Snak::KeepOnGoing(float dT)
 	Zeit += dT;
 	if (Zeit >= TimeForOneMove) {
 		once = true;
+		Set_pos_previous();
+		if (GoW)
+			pos += Vec2D(0, grid.GetDimension()*(-1));
+		else if (GoS)
+			pos += Vec2D(0, grid.GetDimension() );
+		else if (GoA)
+			pos += Vec2D(grid.GetDimension()*(-1),0);
+		else if (GoD)
+			pos += Vec2D(grid.GetDimension(), 0);
+
 		for (int i = 0; i <= nSegments; i++) { //MODERN VERSION <3
 			if (GoW)
-				FollowUp(i, -1, pos.x, &WeGoinUp, &WeGoinDown, &WeGoinRight, &WeGoinLeft);
+				FollowUp(i/* &WeGoinUp, &WeGoinDown, &WeGoinRight, &WeGoinLeft */);
 			else if (GoS)
-				FollowUp(i, 1, pos.x, &WeGoinDown, &WeGoinUp, &WeGoinLeft, &WeGoinRight); // true false false false
+				FollowUp(i/* &WeGoinDown, &WeGoinUp, &WeGoinLeft, &WeGoinRight*/); // true false false false
 			else if (GoA)
-				FollowUp(i, -1, pos.y, &WeGoinLeft, &WeGoinRight, &WeGoinUp, &WeGoinDown);
+				FollowUp(i/* &WeGoinLeft, &WeGoinRight, &WeGoinUp, &WeGoinDown)*/);
 			else if (GoD)
-				FollowUp(i, 1, pos.y, &WeGoinRight, &WeGoinLeft, &WeGoinUp, &WeGoinDown);
+				FollowUp(i/* &WeGoinRight, &WeGoinLeft, &WeGoinUp, &WeGoinDown*/);
 		}
 		Zeit = 0;
 	}
@@ -111,10 +121,10 @@ void Snak::Collision()
 	}
 		
 }
-// holy fuck this one unter mich
+
 void Snak::Segment::PositionSave()
 {
-	Vec2D segpos_previous(segpos);
+	segpos_previous = segpos;
 }
 
 float Snak::ReadTimeForOneMove() const
@@ -137,13 +147,17 @@ int Snak::GetnSegments()
 	return nSegments;
 }
 
-void Snak::Segment::SegmentInit(Snak&snek)
+void Snak::Set_pos_previous()
 {
-	segpos.x = snek.seg[snek.nSegments-1].segpos.x;
-	segpos.y = snek.seg[snek.nSegments - 1].segpos.y;
+	pos_previous = pos;
 }
 
-void Snak::Segment::Init(Vec2D &pos)
+void Snak::Segment::SegmentInit(const Snak& snek)
+{
+	segpos = snek.seg[snek.nSegments - 1].segpos;
+}
+
+void Snak::Segment::Init(Vec2D pos)
 {
 	segpos = pos;
 	// segpos = pos.x+grid.GetDimension(), pos.y;
@@ -168,26 +182,23 @@ void Snak::Segment::Draw(Graphics & gfx, int i)
 	//gfx.DrawRectDim(x,y,grid.GetDimension(),grid.GetDimension(), );
 }
 
-void Snak::FollowUp(int i, int G, float direction, bool *Direction, bool *DirectionFalse, bool*d, bool*d2)
+void Snak::FollowUp(int i /*bool *Direction, bool *DirectionFalse, bool*d, bool*d2*/)
 {
 	seg[i].PositionSave();
 	if (i != 0)
 	{
-		seg[i].segpos.x = seg[i - 1].segpos_previous.x;
-		seg[i].segpos.y = seg[i - 1].segpos_previous.y;
+		seg[i].segpos = seg[i - 1].segpos_previous;
 	}
 	else
 	{
-	seg[0].segpos.x = pos.x;
-	seg[0].segpos.y = pos.y;
+	seg[0].segpos = pos_previous;
+	
 	}
-	if (once) {
-	direction += grid.GetDimension() *G;
-	once = false;
-	*Direction = true;
-	*DirectionFalse = false;
-	*d = false;
-	*d2 = false;
-	}
+	/* if (once) {
+		once = false;
+		*Direction = true;
+		*DirectionFalse = false;
+		*d = false;
+		*d2 = false; */
 }
 

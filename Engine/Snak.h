@@ -10,7 +10,7 @@ class Snak
 public:
 	class Segment {
 	public:
-		void Init(Vec2D &pos);
+		void Init(Vec2D pos);
 		void Draw(Graphics&gfx, int i);
 		Vec2D segpos; //position of the segment
 		//int x;
@@ -18,7 +18,7 @@ public:
 		//int x_previous;
 		//int y_previous;
 		Vec2D segpos_previous;
-		void SegmentInit(Snak&snek);
+		void SegmentInit(const Snak& seg);
 		void PositionSave();
 		// void Color(int i); xD couldn't initialize in .cpp
 		Grid grid;
@@ -37,13 +37,14 @@ public:
 	void fuckingConversion(); //
 	void KeepOnGoing(float dT);
 	void Grow();
-	void FollowUp(int, int, float, bool*, bool*, bool*, bool*);
+	void FollowUp(int/* , bool*, bool*, bool*, bool* */);
 	void Border_Collision();
 	void Collision();
 	float ReadTimeForOneMove() const;
 	void SpeedUp();
 	void SlowDown();
 	int GetnSegments();
+	void Set_pos_previous();
 	// int x;
 	// int y;
 	static const int maxSegments=40;
@@ -62,8 +63,9 @@ public:
 	bool WpressedStimulation = true;
 	int nSegments = 0;
 	Grid grid;
-	Vec2D pos;
+	Vec2D pos; 
+	Vec2D pos_previous;
 	float Zeit= 0;
-	float TimeForOneMove=0.15f; // used to be 15 frames?
+	float TimeForOneMove=0.17f; // used to be 15 frames?
 };
 

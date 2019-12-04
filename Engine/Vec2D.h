@@ -9,6 +9,7 @@ public:
 	Vec2D operator *(float rhs)const;
 	Vec2D& operator *=(float rhs);
 	Vec2D GetXY();
+	bool operator ==(const Vec2D &rhs)const; // useful with mixture / obstacle shit
 public:
 	int x;
 	int y;

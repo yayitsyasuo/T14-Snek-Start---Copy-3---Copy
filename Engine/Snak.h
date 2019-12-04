@@ -37,7 +37,7 @@ public:
 	void fuckingConversion(); //
 	void KeepOnGoing(float dT);
 	void Grow();
-	void FollowUp(int/* , bool*, bool*, bool*, bool* */);
+	void FollowUp(int, bool*, bool*, bool*, bool* );
 	void Border_Collision();
 	void Collision();
 	float ReadTimeForOneMove() const;

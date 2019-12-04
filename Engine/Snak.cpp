@@ -4,12 +4,8 @@
 
 void Snak::fuckingConversion()
 {
-	int xn;
-	xn = pos.x / grid.GetDimension();
-	int yn;
-	yn = pos.y / grid.GetDimension();
-	pos.x = xn * grid.GetDimension();
-	pos.y = yn * grid.GetDimension();
+	pos = Vec2D (pos.x / grid.GetDimension(), pos.y / grid.GetDimension());
+	pos *= grid.GetDimension(); // casting everywhere
 	seg[0].Init(pos);
 }
 
@@ -20,8 +16,8 @@ void Snak::SnakeInit(Vec2D &pos_in)
 
 void Snak::SnakDraw(Graphics & gfx) const
 {
-	for (int c = 1; c < 14; c++) 
-		for (int d = 1; d < 14; d++) 
+	for (int c = 0; c < 15; c++) 
+		for (int d = 0; d < 15; d++) 
 				gfx.PutPixel(pos.x + c, pos.y + d, Colors::Yellow);
 }
 
@@ -67,23 +63,23 @@ void Snak::KeepOnGoing(float dT)
 		if (GoW)
 			pos += Vec2D(0, grid.GetDimension()*(-1));
 		else if (GoS)
-			pos += Vec2D(0, grid.GetDimension() );
+			pos += Vec2D(0, grid.GetDimension());
 		else if (GoA)
-			pos += Vec2D(grid.GetDimension()*(-1),0);
+			pos += Vec2D(grid.GetDimension()*(-1), 0);
 		else if (GoD)
 			pos += Vec2D(grid.GetDimension(), 0);
 
-		for (int i = 0; i <= nSegments; i++) { //MODERN VERSION <3
-			if (GoW)
-				FollowUp(i/* &WeGoinUp, &WeGoinDown, &WeGoinRight, &WeGoinLeft */);
-			else if (GoS)
-				FollowUp(i/* &WeGoinDown, &WeGoinUp, &WeGoinLeft, &WeGoinRight*/); // true false false false
-			else if (GoA)
-				FollowUp(i/* &WeGoinLeft, &WeGoinRight, &WeGoinUp, &WeGoinDown)*/);
-			else if (GoD)
-				FollowUp(i/* &WeGoinRight, &WeGoinLeft, &WeGoinUp, &WeGoinDown*/);
-		}
-		Zeit = 0;
+	for (int i = 0; i <= nSegments; i++) { //MODERN VERSION <3
+		if (GoW)
+			FollowUp(i, &WeGoinUp, &WeGoinDown, &WeGoinRight, &WeGoinLeft );
+		else if (GoS) 
+			FollowUp(i, &WeGoinDown, &WeGoinUp, &WeGoinLeft, &WeGoinRight); // true false false false
+		else if (GoA) 
+			FollowUp(i, &WeGoinLeft, &WeGoinRight, &WeGoinUp, &WeGoinDown);
+		else if (GoD)
+				FollowUp(i, &WeGoinRight, &WeGoinLeft, &WeGoinUp, &WeGoinDown);
+	}
+	Zeit = 0;
 	}
 }
 
@@ -102,7 +98,6 @@ int SnakeDownSide = pos.y + grid.GetDimension();
 	SnakeRightSide >= 800 - grid.Border + 1 ||
 	SnakeDownSide >= 600 - grid.Border + 1)
 	GameOver = true;
-	
 }
 
 void Snak::Collision()
@@ -118,8 +113,7 @@ void Snak::Collision()
 			pos.y < seg[i].segpos.y + grid.GetDimension()) {
 			GameOver=true;
 		}
-	}
-		
+	}		
 }
 
 void Snak::Segment::PositionSave()
@@ -160,15 +154,12 @@ void Snak::Segment::SegmentInit(const Snak& snek)
 void Snak::Segment::Init(Vec2D pos)
 {
 	segpos = pos;
-	// segpos = pos.x+grid.GetDimension(), pos.y;
-	// segpos.x = pos.x + grid.GetDimension();
-	// segpos.y = pos.y;
 }
 
 void Snak::Segment::Draw(Graphics & gfx, int i)
 {
-	for (int c=1; c < 14; c++) {
-		for (int d = 1; d < 14; d++) {
+	for (int c=0; c < 15; c++) {
+		for (int d = 0; d < 15; d++) {
 			if (i % 4==0)
 				gfx.PutPixel(segpos.x + c, segpos.y + d, color[0][0], color[0][1], color[0][2]);
 			else if (i % 3==0)
@@ -182,7 +173,7 @@ void Snak::Segment::Draw(Graphics & gfx, int i)
 	//gfx.DrawRectDim(x,y,grid.GetDimension(),grid.GetDimension(), );
 }
 
-void Snak::FollowUp(int i /*bool *Direction, bool *DirectionFalse, bool*d, bool*d2*/)
+void Snak::FollowUp(int i, bool *Direction, bool *DirectionFalse, bool*d, bool*d2)
 {
 	seg[i].PositionSave();
 	if (i != 0)
@@ -191,14 +182,15 @@ void Snak::FollowUp(int i /*bool *Direction, bool *DirectionFalse, bool*d, bool*
 	}
 	else
 	{
-	seg[0].segpos = pos_previous;
-	
+		seg[0].segpos = pos_previous;
+
 	}
-	/* if (once) {
+	if (once) { // prohibits snek to move backwards
 		once = false;
 		*Direction = true;
 		*DirectionFalse = false;
 		*d = false;
-		*d2 = false; */
+		*d2 = false;
+	}
 }
 

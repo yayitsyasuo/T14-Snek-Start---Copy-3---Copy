@@ -2,92 +2,72 @@
 #include<random>
 
 
+Goal::Goal()
+	:
+	DistX1(15, 765),
+	DistY1(15, 570),
+	rand(seed())
+{
+}
+
 void Goal::DrawObstacle(Graphics&gfx) const
 {
-	gfx.DrawRectDim(x,y,grid.GetDimension(), grid.GetDimension(), Colors::Gray);
+	gfx.DrawRectDim(pos.x,pos.y,grid.GetDimension(), grid.GetDimension(), Colors::Gray);
 }
 
-void Goal::ObstaclesInit()
+void Goal::Init2(Vec2D goal_pos1, Vec2D goal_pos2, Vec2D goal_pos3, Vec2D goal_pos4 )
 {
-	std::mt19937 rand(seed());
-	std::uniform_int_distribution<int> DistX1(15, 765);
-	std::uniform_int_distribution<int> DistY1(15, 570);
-	x = DistX1(rand);
-	y = DistY1(rand);
+	pos = Vec2D(DistX1(rand), DistY1(rand));
+	GridConversion();
+	if (pos == goal_pos1 || pos == goal_pos2 || pos == goal_pos3 || pos == goal_pos4)
+		Init2(goal_pos1, goal_pos2, goal_pos3, goal_pos4);
 }
 
-void Goal::Init(int xn, int yn)
+void Goal::Init3(Vec2D obstaacle_pos)
 {
-	x = xn;
-	y = yn;
+	pos = Vec2D(DistX1(rand), DistY1(rand));
+	GridConversion();
+	if (pos == obstaacle_pos)
+		Init3(obstaacle_pos);
+}
+
+
+void Goal::Init()
+{
+	pos = Vec2D(DistX1(rand), DistY1(rand));
 }
 
 void Goal::Draw(Graphics&gfx)const
 {
-	gfx.DrawRectDim(x,y, grid.GetDimension(), grid.GetDimension(), Colors::Red);
+	gfx.DrawRectDim(pos.x,pos.y, grid.GetDimension(), grid.GetDimension(), Colors::Red);
 }
 
 void Goal::DrawMixture(Graphics & gfx) const
 {
-	gfx.DrawRectDim(x, y, grid.GetDimension(), grid.GetDimension(), Colors::Green);
+	gfx.DrawRectDim(pos.x, pos.y, grid.GetDimension(), grid.GetDimension(), Colors::Green);
 }
 
 void Goal::GridConversion()
 {
-	int xn;
-	xn = x /grid.GetDimension();
-	int yn;
-	yn =y / grid.GetDimension();
-	x = xn *grid.GetDimension();
-	y = yn *grid.GetDimension();
+	pos = Vec2D(pos.x / grid.GetDimension(), pos.y / grid.GetDimension());
+	pos *= grid.GetDimension();
 }
 
 
-int Goal::GetX() const
+Vec2D Goal::GetPos() const
 {
-	return x;
+	return pos;
 }
 
-int Goal::GetY() const
+bool Goal::Collision(Snak& snek)
 {
-	return y;
-}
-
-void Goal::NewXY()
-{
-
-	std::mt19937 rand(seed());
-	std::uniform_int_distribution<int> DistX1(15, 765);
-	std::uniform_int_distribution<int> DistY1(15, 570);
-	x = DistX1(rand);
-	y = DistY1(rand);
-}
-
-void Goal::Food(Snak& snek)
-{
-	const int goal_right_side = x + grid.GetDimension();
-	const int goal_down_side = y + grid.GetDimension();
+	const int goal_right_side = pos.x + grid.GetDimension();
+	const int goal_down_side = pos.y + grid.GetDimension();
 	const int snek_right_side = snek.pos.x + grid.GetDimension();
 	const int snek_down_side = snek.pos.y + grid.GetDimension();
 
-	if (snek_right_side > x &&
+	return (snek_right_side > pos.x &&
 		snek.pos.x < goal_right_side &&
-		snek_down_side > y &&
-		snek.pos.y < goal_down_side) {
-		eaten = true;
-	}
-}
-
-bool Goal::Mixture(Snak& snek)
-{
-	const int goal_right_side = x + grid.GetDimension();
-	const int goal_down_side = y + grid.GetDimension();
-	const int snek_right_side = snek.pos.x + grid.GetDimension();
-	const int snek_down_side = snek.pos.y + grid.GetDimension();
-
-	return (snek_right_side > x &&
-		snek.pos.x < goal_right_side &&
-		snek_down_side > y &&
+		snek_down_side > pos.y &&
 		snek.pos.y < goal_down_side);
 }
-

@@ -32,9 +32,8 @@ Game::Game(MainWindow& wnd)
 {
 	for (int i = 0; i < nGoals; ++i)
 	{
-		goal[i].Init(DistX(rng), DistY(rng));
+		goal[i].Init();
 		goal[i].GridConversion();
-		eaten[i] = false;
 	}
 	Snake.SnakeInit(Vec2D (DistX(rng), DistY(rng)));
 	Snake.fuckingConversion();
@@ -57,93 +56,48 @@ void Game::UpdateModel()
 		Snake.SnakControl(wnd.kbd);
 		for (int i = 0; i < nGoals; ++i)
 		{
-			goal[i].Food(Snake);
-			if (goal[i].eaten)
+			if (goal[i].Collision(Snake))
 			{
-				goal[i].NewXY();
+				goal[i].Init();
 				goal[i].GridConversion();
 				Snake.Grow();
 				Snake.seg[Snake.GetnSegments()].SegmentInit(Snake);
 				Snake.SpeedUp();
-				goal[i].eaten = false;
-				GoObstacle = true;
-				if (just_once) {
-					nObstacles++;
-					just_once = false;
-					just_once2 = true;
-				}
-				once3 = true;
+				nObstacles++;
+				goal[nObstacles].Init2(goal[0].pos, goal[1].pos, goal[2].pos, goal[3].pos); // goal function init obstaacle here
 			}
 		}
-			// Obstacle shit here ONLY INITIALIZATION
-			if (GoObstacle) {
-				do {
-					obstacles[nObstacles].ObstaclesInit();
-					obstacles[nObstacles].GridConversion();
-					for (int i = 0; i < nGoals; i++) {
-						if (obstacles[nObstacles].GetX() == goal[i].GetX() ||
-							obstacles[nObstacles].GetY() == goal[i].GetY() ||
-							obstacles[nObstacles].GetX() == goal[i].GetX() + grid.GetDimension() ||
-							obstacles[nObstacles].GetY() == goal[i].GetY() + grid.GetDimension())
-							shitt = true;
-						else shitt = false;
-					}
-				} while (shitt);
-				just_once = true;
-				start_drawing = true;
-			}
-			GoObstacle = false;
 
-			if (just_once2) {   // mixture stuff
-				if ((nObstacles + 1) % 6 == 0) { //could be given those  already taken
-					bool shitt1;
-					do {
-						Mixture[nMixtures].NewXY();
-						Mixture[nMixtures].GridConversion();
+		TimeSum += dT; // timer count
+		if (TimeSum >= 8.0f) {
+			nMixtures++;
+			Mixture[nMixtures].Init2(goal[0].pos, goal[1].pos, goal[2].pos, goal[3].pos);
+			for (int i =0; i<= nObstacles; i++)
+				Mixture[nMixtures].Init3(goal[i].pos);
+			TimeSum = 0;
+		}
 
-						for (int i = 0; i < nGoals; i++) {
-							if (Mixture[nMixtures].GetX() == goal[i].GetX() ||
-								Mixture[nMixtures].GetY() == goal[i].GetY() ||
-								Mixture[nMixtures].GetX() == goal[i].GetX() + grid.GetDimension() ||
-								Mixture[nMixtures].GetY() == goal[i].GetY() + grid.GetDimension())
-								shitt1 = true;
-							else shitt1 = false;
-						}
-						for (int i = 0; i < nObstacles; i++) {
-							if (Mixture[nMixtures].GetX() == obstacles[i].GetX() ||
-								Mixture[nMixtures].GetY() == obstacles[i].GetY() ||
-								Mixture[nMixtures].GetX() == obstacles[i].GetX() + grid.GetDimension() ||
-								Mixture[nMixtures].GetY() == obstacles[i].GetY() + grid.GetDimension())
-								shitt2 = true;
-							else shitt2 = false;
-						}
-					} while (shitt2 || shitt1);
-					GoMixture = true; // FALSE WHEN WE EAT IT
-					just_once2 = false;
-					Mixture[nMixtures].eaten = false;
-					nMixtures++;
-				}
-			}
+        
+        for (int i = 0; i <= nMixtures; i++)
+        {
+        	if (Mixture[i].Collision(Snake))
+        	{
+        		Snake.SlowDown();
+        		Mixture[i].eaten = true;
+        	}
+        	//actually I would like to let it stay as a source but make it be surrounded by rocks
+        }
+        
+        for (int i = 0; i <= nObstacles; i++)
+        {
+        	if (obstacles[i].Collision(Snake))
+        		Snake.GameOver = true;
+        }
 
-			for (int i = 0; i <= nMixtures; i++)
-			{
-				if (Mixture[i].Mixture(Snake))
-				{
-					Snake.SlowDown();
-					Mixture[i].eaten = true;
-				}
-				//actually I would like to let it stay as a source but make it be surrounded by rocks
-			}
-
-			for (int i = 0; i <= nObstacles; i++)
-			{
-				if (obstacles[i].Mixture(Snake))
-					Snake.GameOver = true;
-			}
-			Snake.KeepOnGoing(dT);
-			Snake.Collision();
-			Snake.Border_Collision();
-	}
+        Snake.KeepOnGoing(dT);
+        Snake.Collision();
+        Snake.Border_Collision();
+        }
 }
 
 
@@ -159,16 +113,14 @@ void Game::ComposeFrame()
 
 	Snake.SnakDraw(gfx);
 
-	if (start_drawing) {
-		for (int i = 0; i <= nObstacles; i++)
-			obstacles[i].DrawObstacle(gfx);
+	for (int i = 0; i <= nObstacles; i++)
+		obstacles[i].DrawObstacle(gfx);
+
+	for (int i = 0; i <= nMixtures; i++) {
+		if (!Mixture[i].eaten)
+		Mixture[i].DrawMixture(gfx);
 	}
-	if (GoMixture) {
-		for (int i = 0; i < nMixtures; i++) {
-			if (!Mixture[i].eaten)
-			Mixture[i].DrawMixture(gfx);
-		}
-	}
+	
 
 	if (Snake.GameOver)
 		ded.DrawGameOver(gfx);

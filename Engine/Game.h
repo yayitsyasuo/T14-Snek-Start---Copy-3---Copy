@@ -51,35 +51,20 @@ private:
 	std::mt19937 rng;
 	std::uniform_int_distribution<int> DistX;
 	std::uniform_int_distribution<int> DistY;
-	
-	/********************************/
-	/*  User Variables              */
+
 	Snak Snake;
-	
-	static constexpr int nGoals = 5;
-	static constexpr int nMaxObstacles = 40;
-	static constexpr int MaxMixtures= 5;
+	int nObstacles=-1;
+	int nMixtures = -1;
+	int static constexpr nGoals = 4;
 	Goal goal[nGoals];
-	Goal obstacles[nMaxObstacles];
-	Goal Mixture[MaxMixtures];
-	int nObstacles=0;
-	int nMixtures = 0;
+	Goal obstacles[40];
+	Goal Mixture[5];
 	Grid grid;
 	OnScreen ded;
 	Zeit Zeit;
+	float TimeSum = 0;
 
 
-	bool GoObstacle = false;
-	bool eaten[nGoals];
-	bool shitt = false;
-	bool shitt2 = false;
-	bool just_once = false;
-	bool start_drawing = false;
-	bool GoMixture = false;
-	bool just_once2 = false;
-	bool once3 = false;
-	
-	
-	
+
 	/********************************/
 };

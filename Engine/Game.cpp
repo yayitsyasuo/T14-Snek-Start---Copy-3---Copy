@@ -59,19 +59,23 @@ void Game::UpdateModel()
 			if (goal[i].Collision(Snake))
 			{
 				goal[i].Init();
-				goal[i].GridConversion();
 				Snake.Grow();
 				Snake.seg[Snake.GetnSegments()].SegmentInit(Snake);
 				Snake.SpeedUp();
 				nObstacles++;
-				goal[nObstacles].Init2(goal[0].pos, goal[1].pos, goal[2].pos, goal[3].pos); // goal function init obstaacle here
+				obstacles[nObstacles].Init(); // goal function init obstaacle here
+				for(int g=0; g<= nGoals; g++)
+				obstacles[nObstacles].SamePosition(goal[g].pos);
 			}
 		}
+
 
 		TimeSum += dT; // timer count
 		if (TimeSum >= 8.0f) {
 			nMixtures++;
-			Mixture[nMixtures].Init2(goal[0].pos, goal[1].pos, goal[2].pos, goal[3].pos);
+			Mixture[nMixtures].Init();
+			for (int g = 0; g <= nGoals; g++)
+			Mixture[nMixtures].SamePosition(goal[g].pos);
 			for (int i =0; i<= nObstacles; i++)
 				Mixture[nMixtures].Init3(goal[i].pos);
 			TimeSum = 0;

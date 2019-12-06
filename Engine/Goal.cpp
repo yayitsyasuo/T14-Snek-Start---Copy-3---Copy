@@ -15,14 +15,6 @@ void Goal::DrawObstacle(Graphics&gfx) const
 	gfx.DrawRectDim(pos.x,pos.y,grid.GetDimension(), grid.GetDimension(), Colors::Gray);
 }
 
-void Goal::Init2(Vec2D goal_pos1, Vec2D goal_pos2, Vec2D goal_pos3, Vec2D goal_pos4 )
-{
-	pos = Vec2D(DistX1(rand), DistY1(rand));
-	GridConversion();
-	if (pos == goal_pos1 || pos == goal_pos2 || pos == goal_pos3 || pos == goal_pos4)
-		Init2(goal_pos1, goal_pos2, goal_pos3, goal_pos4);
-}
-
 void Goal::Init3(Vec2D obstaacle_pos)
 {
 	pos = Vec2D(DistX1(rand), DistY1(rand));
@@ -35,6 +27,7 @@ void Goal::Init3(Vec2D obstaacle_pos)
 void Goal::Init()
 {
 	pos = Vec2D(DistX1(rand), DistY1(rand));
+	GridConversion();
 }
 
 void Goal::Draw(Graphics&gfx)const
@@ -70,4 +63,10 @@ bool Goal::Collision(Snak& snek)
 		snek.pos.x < goal_right_side &&
 		snek_down_side > pos.y &&
 		snek.pos.y < goal_down_side);
+}
+
+void Goal::SamePosition(Vec2D goal_pos)
+{
+	if (pos == goal_pos)
+	Init();
 }

@@ -12,8 +12,8 @@ public:
 	void OnGridPosInit(std::mt19937& rng);
 	Vec2D OnGridPos;
 	static constexpr int dimension = 15;// this nibba decides for all
-	static constexpr int GridPositionsX= 800 / dimension;
-	static constexpr int GridPositionsY = 600 / dimension;
+	static constexpr int GridPositionsX= 765 / dimension;
+	static constexpr int GridPositionsY = 570 / dimension;
 	bool HasObstacle[GridPositionsX*GridPositionsY] = { false };
 
 };

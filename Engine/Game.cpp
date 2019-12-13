@@ -63,9 +63,9 @@ void Game::UpdateModel()
 				Snake.seg[Snake.GetnSegments()].SegmentInit(Snake);
 				Snake.SpeedUp();
 				nObstacles++;
-				obstacles[nObstacles].Init(); // goal function init obstaacle here
-				for(int g=0; g<= nGoals; g++)
-				obstacles[nObstacles].SamePosition(goal[g].pos);
+				grid.OnGridPosInit(rng); // goal function init obstaacle here
+			//	for(int g=0; g<= nGoals; g++)
+			//	obstacles[nObstacles].SamePosition(goal[g].pos);
 			}
 		}
 
@@ -92,11 +92,11 @@ void Game::UpdateModel()
         	//actually I would like to let it stay as a source but make it be surrounded by rocks
         }
         
-        for (int i = 0; i <= nObstacles; i++)
-        {
-        	if (obstacles[i].Collision(Snake))
-        		Snake.GameOver = true;
-        }
+    //    for (int i = 0; i <= nObstacles; i++)
+    //    {
+    //    	if (obstacles.Collision(Snake))
+    //    		Snake.GameOver = true;
+    //    }
 
         Snake.KeepOnGoing(dT);
         Snake.Collision();
@@ -117,8 +117,9 @@ void Game::ComposeFrame()
 
 	Snake.SnakDraw(gfx);
 
-	for (int i = 0; i <= nObstacles; i++)
-		obstacles[i].DrawObstacle(gfx);
+	//for (int i = 0; i <= nObstacles; i++)
+		//obstacles[i].DrawObstacle(gfx);
+	obstacles.DrawObstacle(gfx);
 
 	for (int i = 0; i <= nMixtures; i++) {
 		if (!Mixture[i].eaten)

@@ -27,9 +27,8 @@ public:
 	std::mt19937 rand;
 	std::uniform_int_distribution<int> DistX1;
 	std::uniform_int_distribution<int> DistY1;
-	Vec2D pos; // the position of obstacles?
+	Vec2D pos; // position of the obstacles?
 	Snak snek;
 	Grid grid;
-	Grid ObstacleOnGridPos;
 };
 

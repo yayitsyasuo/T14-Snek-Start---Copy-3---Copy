@@ -12,7 +12,12 @@ Goal::Goal()
 
 void Goal::DrawObstacle(Graphics&gfx) const
 {
-	gfx.DrawRectDim(pos.x,pos.y,grid.GetDimension(), grid.GetDimension(), Colors::Gray);
+	int i = 0;
+	while (i != (grid.GridPositionsX* grid.GridPositionsY))
+	{
+		if(grid.HasObstacle[i]==true)
+			gfx.DrawRectDim(pos.x, pos.y, grid.GetDimension(), grid.GetDimension(), Colors::Gray);
+	}
 }
 
 void Goal::Init3(Vec2D obstaacle_pos)

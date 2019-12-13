@@ -57,7 +57,7 @@ private:
 	int nMixtures = -1;
 	int static constexpr nGoals = 4;
 	Goal goal[nGoals];
-	Goal obstacles[40];
+	Goal obstacles;
 	Goal Mixture[5];
 	Grid grid;
 	OnScreen ded;

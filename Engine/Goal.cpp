@@ -15,8 +15,10 @@ void Goal::DrawObstacle(Graphics&gfx) const
 	int i = 0;
 	while (i != (grid.GridPositionsX* grid.GridPositionsY))
 	{
+		int Row = i / grid.GridPositionsX;
+		int Column = i % Row;
 		if(grid.HasObstacle[i]==true)
-			gfx.DrawRectDim(pos.x, pos.y, grid.GetDimension(), grid.GetDimension(), Colors::Gray);
+			gfx.DrawRectDim(15*(Column-1), 15*(Row-1), grid.GetDimension(), grid.GetDimension(), Colors::Gray);
 	}
 }
 

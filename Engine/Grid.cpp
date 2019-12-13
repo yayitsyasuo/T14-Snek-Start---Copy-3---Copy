@@ -24,3 +24,14 @@ void Grid::Borders(Graphics &gfx) const
 		gfx.PutPixel(780 , i, Colors::Blue);
 	}
 }
+
+void Grid::OnGridPosInit(std::mt19937 & rng)
+{
+	std::random_device rng;
+	std::uniform_int_distribution<int> GridPosXInit(0, GridPositionsX);
+	std::uniform_int_distribution<int> GridPosYInit(0, GridPositionsY);
+	OnGridPos=(Vec2D(GridPosXInit(rng), GridPosYInit(rng)));
+
+	HasObstacle[GridPositionsX* OnGridPos.y + OnGridPos.x] = true;
+}
+

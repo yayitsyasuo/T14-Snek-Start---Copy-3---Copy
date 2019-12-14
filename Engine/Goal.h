@@ -1,6 +1,6 @@
 #pragma once
 #include "Graphics.h"
-#include "Colors.h"
+
 #include<random>
 #include"Snak.h"
 #include"Grid.h"
@@ -31,6 +31,6 @@ public:
 	Snak snek;
 	Graphics& gfx;
 	Grid grid;
-	Color c;
+	static constexpr Color c = Colors::Gray;
 };
 

@@ -7,8 +7,7 @@ Goal::Goal()
 	DistX1(15, 765),
 	DistY1(15, 570),
 	rand(seed()),
-	gfx(gfx),
-	c(Colors::Cyan)
+	gfx(gfx)
 {
 }
 
@@ -32,7 +31,10 @@ void Goal::DrawObstacle(Grid& grid) const
 				Row = 0;
 				Column = 0;
 			}
-			gfx.DrawRectDim(15 * Column, 15 * Row, grid.GetDimension(), grid.GetDimension(), c);
+			// gfx.DrawRectDim(15 * Column, 15 * Row, grid.GetDimension(), grid.GetDimension(), c);
+			gfx.DrawRect(15 * Column, 15 * Row, 
+				15 * Column + grid.GetDimension(), 
+				15 * Row+ grid.GetDimension(), c);
 		}
 		i++;
 	}

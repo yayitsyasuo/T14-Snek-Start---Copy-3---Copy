@@ -6,19 +6,35 @@ Goal::Goal()
 	:
 	DistX1(15, 765),
 	DistY1(15, 570),
-	rand(seed())
+	rand(seed()),
+	gfx(gfx),
+	c(Colors::Cyan)
 {
 }
 
-void Goal::DrawObstacle(Graphics&gfx) const
+void Goal::DrawObstacle(Grid& grid) const
 {
 	int i = 0;
-	while (i != (grid.GridPositionsX* grid.GridPositionsY))
+	while (i != (grid.Columns* grid.Rows))
 	{
-		int Row = i / grid.GridPositionsX;
-		int Column = i % Row;
-		if(grid.HasObstacle[i]==true)
-			gfx.DrawRectDim(15*(Column-1), 15*(Row-1), grid.GetDimension(), grid.GetDimension(), Colors::Gray);
+		if (grid.HasObstacle[i])
+		{
+			int Row, Column;
+			if (i != 0) {
+				Row = i / grid.Columns; // i = 1 938 no nie xD //38
+				if (Row != 0)
+					Column = i - (Row*grid.Columns);
+				else
+					Column = i;
+			}
+			else
+			{
+				Row = 0;
+				Column = 0;
+			}
+			gfx.DrawRectDim(15 * Column, 15 * Row, grid.GetDimension(), grid.GetDimension(), c);
+		}
+		i++;
 	}
 }
 

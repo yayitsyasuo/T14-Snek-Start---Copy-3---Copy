@@ -11,7 +11,7 @@ class Goal
 {
 public:
 	Goal();
-	void DrawObstacle(Graphics&gfx) const;
+	void DrawObstacle(Grid& grid) const;
 	void Init3(Vec2D obstaacle_pos);
 	void Init();
 	void Draw(Graphics&gfx)const;
@@ -29,6 +29,8 @@ public:
 	std::uniform_int_distribution<int> DistY1;
 	Vec2D pos; // position of the obstacles?
 	Snak snek;
+	Graphics& gfx;
 	Grid grid;
+	Color c;
 };
 

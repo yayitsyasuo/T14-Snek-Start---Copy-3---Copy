@@ -119,7 +119,7 @@ void Game::ComposeFrame()
 
 	//for (int i = 0; i <= nObstacles; i++)
 		//obstacles[i].DrawObstacle(gfx);
-	obstacles.DrawObstacle(gfx);
+	obstacles.DrawObstacle(grid);
 
 	for (int i = 0; i <= nMixtures; i++) {
 		if (!Mixture[i].eaten)

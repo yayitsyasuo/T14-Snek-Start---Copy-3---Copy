@@ -27,11 +27,11 @@ void Grid::Borders(Graphics &gfx) const
 
 void Grid::OnGridPosInit(std::mt19937 & rng)
 {
-	std::uniform_int_distribution<int> GridPosXInit(0, GridPositionsX);
-	std::uniform_int_distribution<int> GridPosYInit(0, GridPositionsY);
+	std::uniform_int_distribution<int> GridPosXInit(0, Columns);
+	std::uniform_int_distribution<int> GridPosYInit(0, Rows);
 	OnGridPos=(Vec2D(GridPosXInit(rng), GridPosYInit(rng)));
 
-	HasObstacle[GridPositionsX* OnGridPos.y + OnGridPos.x] = true; //BIG GUY
+	HasObstacle[Columns* OnGridPos.y + OnGridPos.x] = true; //BIG GUY
 }
 
 
